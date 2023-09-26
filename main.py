@@ -40,9 +40,9 @@ async def convert_reading(register_list, datatype="int16"):
     elif datatype == "int32":
         readings = word_list_to_value(register_list, "int32")
     elif datatype == "int16":
-        readings = [int(np.int16(v)) for v in register_list]
+        readings = [np.int16(v) for v in register_list]
     elif datatype == "uint16":
-        readings = [int(np.uint16(v)) for v in register_list]
+        readings = [np.uint16(v) for v in register_list]
     elif datatype == "int16_alt":
         readings = [int(v) for v in register_list]
     return readings
