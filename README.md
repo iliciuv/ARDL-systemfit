@@ -1,2 +1,11 @@
 # ARDL-systemfit
-Implementation of the Pesaran et al. (2001) bound testing procedure to cointegration with R systemfit FGLS estimation 
+Minimal implementation of an asyncronous modbus web-client for getting readings from TCP devices.
+
+It has been built using streamlit which allows a really easy implementation of a user interface for asyncmodbus:
+
+## Modificable Parameters:
+    - host: Modbus server IP address.
+    - port: Modbus server port.
+    - address: Starting address for reading.
+    - register_length: Number of registers to read.
+    - data_type: Data type for conversion. One of "float", "int32", "int16", or "uint16".
