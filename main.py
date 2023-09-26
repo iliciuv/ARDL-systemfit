@@ -28,7 +28,7 @@ def word_list_to_value(words, kind):
         for word_pair in zip(words[::2], words[1::2])
     ]
 
-async def convert_reading(register_list, num_registers, datatype="int16"):
+async def convert_reading(register_list, datatype="int16"):
 
     #Convert a list of register values based on the specified data type.
 
@@ -68,7 +68,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
         result = await client.read_holding_registers(slave_id=0x01, starting_address=int(address), quantity=int(register_length))
-        converted_result = await convert_reading(result, len(result), data_type)
+        converted_result = await convert_reading(result, data_type)
         return converted_result
     except Exception as e:
         st.write("Error: ", e)
@@ -85,13 +85,11 @@ def main():
         address = st.text_input("Address", "14720")
     with cols2:
         register_length = st.text_input("Longitud", "1")
-        data_type = st.selectbox("Data Type", ["int16", "uint16", "int32", "float"])
+        data_type = st.selectbox("Data Type", ["int16", "uint16", "int16_alt", "int32", "float"])
     with cols3:
         if st.button("Submit"):
-            def fetch_and_display_data():
-                result = asyncio.run(read_modbus_data(host, int(port), int(address), int(register_length), data_type))
-                st.write("Response: ", result)
-            fetch_and_display_data()
+            result = asyncio.run(read_modbus_data(host, int(port), int(address), int(register_length), data_type))
+            st.write("Response: ", result)
+
 if __name__ == "__main__":
     main()
-
