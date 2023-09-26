@@ -77,7 +77,6 @@ async def read_multiple_modbus_data(host, port, address, register_length, data_t
 def main():
 
     # Main function to render the Streamlit interface and handle user interactions.
-    result_join = []
     st.title("Async Modbus Reader")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
