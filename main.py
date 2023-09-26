@@ -58,7 +58,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
 
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
-        result = await client.read_holding_registers(slave_id=0x01, starting_address=int(address), quantity=int(register_length))
+        result = await client.read_holding_registers(slave_id=0x01, starting_address=address, quantity=register_length)
         converted_result = await convert_reading(result, data_type)
         return converted_result
     except Exception as e:
