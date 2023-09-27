@@ -29,7 +29,7 @@ def convert_reading(register_list, datatype="int16"):
     # Parameters:
     #   - register_list: List of register values.
     #   - num_registers: Number of registers.
-    #   - datatype: Data type for conversion. One of "float", "int32", "int16", "uint16", or "int16_alt".
+    #   - datatype: One of "float", "int32", "int16", "uint16", or "int16_alt".
     # Returns:
     #   - List of converted register values.
 
@@ -53,7 +53,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
     #   - port: Modbus server port.
     #   - address: Starting address for reading.
     #   - register_length: Number of registers to read.
-    #   - data_type: Data type for conversion. One of "float", "int32", "int16", or "uint16".
+    #   - data_type: One of "float", "int32", "int16", or "uint16".
 
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
@@ -81,8 +81,8 @@ def main():
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
         host = st.text_input("Modbus host IP", "45.95.197.176")
-        port = st.text_input("Port", "48418")
-        address = st.text_input("Address", "14720")
+        port = st.text_input("Port", 48418)
+        address = st.text_input("Address", 14720)
     with cols2:
         register_length = st.selectbox("Length", [1, 2])
         data_type = st.selectbox(
@@ -93,12 +93,12 @@ def main():
         if st.button("Submit"):
             results = asyncio.run(
                 read_multiple_modbus_data(
-                    host,
-                    int(port),
-                    int(address),
-                    int(register_length),
-                    data_type,
-                    int(attempts),
+                   host = host,
+                   port = int(port),
+                   address = int(address),
+                   register_length = int(register_length),
+                   data_type = data_type,
+                   attempts = int(attempts),
                 )
             )
             st.write("Response: ", results)
