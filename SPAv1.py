@@ -91,7 +91,6 @@ def main():
                 int(register_length),
                 data_type,
                 int(attempts)))
-
             st.write("Response: ", results)
 
 if __name__ == "__main__":
