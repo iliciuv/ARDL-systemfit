@@ -57,13 +57,17 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
 
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
-        result = await client.read_holding_registers(slave_id=0x01, starting_address=address, quantity=register_length)
+        result = await client.read_holding_registers(
+            slave_id=0x01, starting_address=address, quantity=register_length
+        )
         converted_result = convert_reading(result, data_type)
         return converted_result
     except Exception as e:
         st.write("Error: ", e)
 
-async def read_multiple_modbus_data(host, port, address, register_length, data_type, attempts):
+async def read_multiple_modbus_data(
+    host, port, address, register_length, data_type, attempts
+):
     results = []
     for _ in range(attempts):
         result = await read_modbus_data(host, port, address, register_length, data_type)
@@ -72,6 +76,7 @@ async def read_multiple_modbus_data(host, port, address, register_length, data_t
 
 def main():
     # Main function to render the Streamlit interface and handle user interactions.
+
     st.title("Async Modbus Reader")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
@@ -79,19 +84,25 @@ def main():
         port = st.text_input("Port", "48418")
         address = st.text_input("Address", "14720")
     with cols2:
-        register_length = st.text_input("Length", "1")
-        data_type = st.selectbox("Data Type", ["int16", "uint16", "int16_alt", "int32", "float"])
-        attempts = st.selectbox("nº attempts:", [1, 5, 10])
+        register_length = st.selectbox("Length", [1, 2])
+        data_type = st.selectbox(
+            "Data Type", ["int16", "uint16", "int16_alt", "int32", "float"]
+        )
+        attempts = st.selectbox("nº attempts:", [1, 3, 5])
     with cols3:
         if st.button("Submit"):
-            results = asyncio.run(read_multiple_modbus_data(
-                host,
-                int(port),
-                int(address),
-                int(register_length),
-                data_type,
-                int(attempts)))
+            results = asyncio.run(
+                read_multiple_modbus_data(
+                    host,
+                    int(port),
+                    int(address),
+                    int(register_length),
+                    data_type,
+                    int(attempts),
+                )
+            )
             st.write("Response: ", results)
+
 
 if __name__ == "__main__":
     main()
