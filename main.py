@@ -1,4 +1,5 @@
-# ModbusAsyncApp.py
+# ModbusAsyncWeb. Single script app @Miguel Garcia Duch (27/09/2023)
+
 import streamlit as st
 from async_modbus import modbus_for_url
 import asyncio
