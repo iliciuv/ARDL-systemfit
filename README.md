@@ -1,7 +1,7 @@
 # Async-Modubus Streamlit WebApp
 Minimal implementation of an asyncronous modbus web-client for getting readings from TCP devices.
 
-It has been built using streamlit which allows a really easy implementation of a user interface for asyncmodbus in a single file app of less than 100 lines of code.
+It has been built using streamlit which allows a really easy implementation of a user interface for asyncmodbus in a single file app of around 100 lines of code.
 
 ## Modificable Parameters:
     - host: Modbus server IP address.
