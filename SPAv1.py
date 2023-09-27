@@ -1,5 +1,4 @@
 # ModbusAsyncApp.py
-
 import streamlit as st
 from async_modbus import modbus_for_url
 import asyncio
@@ -58,7 +57,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
 
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
-        result = await client.read_holding_registers(slave_id=0x01, starting_address=int(address), quantity=int(register_length))
+        result = await client.read_holding_registers(slave_id=0x01, starting_address=address, quantity=register_length)
         converted_result = await convert_reading(result, data_type)
         return converted_result
     except Exception as e:
@@ -85,7 +84,14 @@ def main():
         attempts = st.selectbox("nº attempts:", [1, 5, 10])
     with cols3:
         if st.button("Submit"):
-            results = asyncio.run(read_multiple_modbus_data(host, int(port), int(address), int(register_length), data_type, int(attempts)))
+            results = asyncio.run(read_multiple_modbus_data(
+                host,
+                int(port),
+                int(address),
+                int(register_length),
+                data_type,
+                int(attempts)))
+
             st.write("Response: ", results)
 
 if __name__ == "__main__":
