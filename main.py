@@ -40,9 +40,9 @@ async def convert_reading(register_list, datatype="int16"):
     elif datatype == "int32":
         readings = word_list_to_value(register_list, "int32")
     elif datatype == "int16":
-        readings = [np.int16(v) for v in register_list]
+        readings = [int(np.int16(v)) for v in register_list]
     elif datatype == "uint16":
-        readings = [np.uint16(v) for v in register_list]
+        readings = [int(np.uint16(v)) for v in register_list]
     elif datatype == "int16_alt":
         readings = [int(v) for v in register_list]
     return readings
@@ -58,7 +58,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
 
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
-        result = await client.read_holding_registers(slave_id=0x01, starting_address=address, quantity=register_length)
+        result = await client.read_holding_registers(slave_id=0x01, starting_address=int(address), quantity=int(register_length))
         converted_result = await convert_reading(result, data_type)
         return converted_result
     except Exception as e:
@@ -72,21 +72,17 @@ async def read_multiple_modbus_data(host, port, address, register_length, data_t
     return results
 
 def main():
-    # Main function to render the Streamlit interface and handle user interactions
-
+    # Main function to render the Streamlit interface and handle user interactions.
     st.title("Async Modbus Reader")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
-
     with cols1:
         host = st.text_input("Modbus host IP", "45.95.197.176")
         port = st.text_input("Port", "48418")
         address = st.text_input("Address", "14720")
-
     with cols2:
         register_length = st.text_input("Length", "1")
         data_type = st.selectbox("Data Type", ["int16", "uint16", "int16_alt", "int32", "float"])
         attempts = st.selectbox("nº attempts:", [1, 5, 10])
-
     with cols3:
         if st.button("Submit"):
             results = asyncio.run(read_multiple_modbus_data(host, int(port), int(address), int(register_length), data_type, int(attempts)))
