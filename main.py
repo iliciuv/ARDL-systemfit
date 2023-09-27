@@ -5,6 +5,7 @@ import asyncio
 import struct
 import numpy as np
 
+
 def word_list_to_value(words, kind):
     # Convert a list of words (16-bit values) to their respective representations.
     # Parameters:
@@ -23,6 +24,7 @@ def word_list_to_value(words, kind):
         struct.unpack("!" + k, struct.pack("!HH", *word_pair))[0]
         for word_pair in zip(words[::2], words[1::2])
     ]
+
 
 def convert_reading(register_list, datatype="int16"):
     # Convert a list of register values based on the specified data type.
@@ -46,6 +48,7 @@ def convert_reading(register_list, datatype="int16"):
         readings = [int(v) for v in register_list]
     return readings
 
+
 async def read_modbus_data(host, port, address, register_length=1, data_type="int16"):
     # Asynchronously read data from Modbus server and display it in Streamlit.
     # Parameters:
@@ -65,6 +68,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
     except Exception as e:
         st.write("Error: ", e)
 
+
 async def read_multiple_modbus_data(
     host, port, address, register_length, data_type, attempts
 ):
@@ -73,6 +77,7 @@ async def read_multiple_modbus_data(
         result = await read_modbus_data(host, port, address, register_length, data_type)
         results += result
     return results
+
 
 def main():
     # Main function to render the Streamlit interface and handle user interactions.
@@ -93,12 +98,12 @@ def main():
         if st.button("Submit"):
             results = asyncio.run(
                 read_multiple_modbus_data(
-                   host = host,
-                   port = int(port),
-                   address = int(address),
-                   register_length = int(register_length),
-                   data_type = data_type,
-                   attempts = int(attempts),
+                    host=host,
+                    port=int(port),
+                    address=int(address),
+                    register_length=int(register_length),
+                    data_type=data_type,
+                    attempts=int(attempts),
                 )
             )
             st.write("Response: ", results)
