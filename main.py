@@ -6,7 +6,7 @@ import struct
 import numpy as np
 
 def word_list_to_value(words, kind):
-    # Convert a list of words (16-bit values) to their respective int32 or float32 representations.
+    # Convert a list of words (16-bit values) to their respective representations.
     # Parameters:
     #   - words: List of 16-bit values.
     #   - kind: Data type for conversion. Either "int32" or "float32".
