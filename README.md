@@ -1,3 +1,5 @@
+@iliciuv author: Miguel Garcia-Duch v.1.0 17-Oct-2023
+
 # Async-Modubus Streamlit WebApp
 Minimal implementation of an asyncronous modbus web-client for getting readings from TCP devices.
 
