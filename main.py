@@ -86,7 +86,7 @@ def main():
     st.title("Async Modbus Reader")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
-        host = st.text_input("Modbus host IP", "45.95.197.176")
+        host = st.text_input("Modbus host IP", "45.95.197.17X")
         port = st.text_input("Port", 48418)
         address = st.text_input("Address", 14720)
     with cols2:
