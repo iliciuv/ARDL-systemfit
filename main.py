@@ -9,18 +9,14 @@ import numpy as np
 
 def word_list_to_value(words, kind):
     # Convert a list of words (16-bit values) to their respective representations.
-    # Parameters:
-    #   - words: List of 16-bit values.
-    #   - kind: Data type for conversion. Either "int32" or "float32".
-    # Returns:
-    #   - List of converted values.
-
     if kind == "int32":
         k = "i"
+    elif kind == "uint32":
+        k = "I"   # <-- Add this for unsigned int 32
     elif kind == "float32":
         k = "f"
     else:
-        raise ValueError('Invalid kind. Expected "int32" or "float32".')
+        raise ValueError('Invalid kind. Expected "int32", "uint32" or "float32".') # <-- Update the error message
     return [
         struct.unpack("!" + k, struct.pack("!HH", *word_pair))[0]
         for word_pair in zip(words[::2], words[1::2])
@@ -41,6 +37,8 @@ def convert_reading(register_list, datatype="int16"):
         readings = word_list_to_value(register_list, "float32")
     elif datatype == "int32":
         readings = word_list_to_value(register_list, "int32")
+    elif datatype == "uint32":
+        readings = word_list_to_value(register_list, "uint32")
     elif datatype == "int16":
         readings = [int(np.int16(v)) for v in register_list]
     elif datatype == "uint16":
@@ -90,7 +88,7 @@ def main():
     with cols2:
         register_length = st.selectbox("Length", [1, 2, 4])
         data_type = st.selectbox(
-            "Data Type", ["int16", "uint16", "int32", "float"]
+            "Data Type", ["int16", "uint16", "uint32", "int32", "float"]
         )
         attempts = st.selectbox("nº attempts:", [1, 3, 5])
     with cols3:
