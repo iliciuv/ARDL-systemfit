@@ -46,7 +46,7 @@ def convert_reading(register_list, datatype="int16"):
     elif datatype == "uint16":
         readings = [np.uint16(v) for v in register_list]
     elif datatype == "int16_alt":
-        readings = [int(v) for v in register_list]
+        readings = [int(np.int16(v)) for v in register_list]
     return readings
 
 
