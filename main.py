@@ -37,7 +37,7 @@ def convert_reading(register_list, datatype="int16"):
     # Parameters:
     #   - register_list: List of register values.
     #   - num_registers: Number of registers.
-    #   - datatype: One of "float", "int32", "int16", "uint16", or "int16_alt".
+    #   - datatype: One of "float", "int32", "int16", "uint16", "uint32", or "uint32_alt".
     # Returns:
     #   - List of converted register values.
 
