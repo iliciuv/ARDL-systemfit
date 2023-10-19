@@ -17,18 +17,18 @@ def word_list_to_value(words, kind):
         k = "f"
     else:
         raise ValueError('Invalid kind. Expected "int32", "uint32" or "float32".') # <-- Update the error message
-    return [
-        struct.unpack("!" + k, struct.pack("!HH", *word_pair))[0]
-        for word_pair in zip(words[::2], words[1::2])
-    ]
+    if kind != "unit32_alt":
+        return [
+            struct.unpack("!" + k, struct.pack("!HH", *word_pair))[0]
+            for word_pair in zip(words[::2], words[1::2])
+        ]
+    # a especial procedure to get pseudo uint32 values manipulating two consecutive unit16 registers
+    else:
+        return [
+            int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
+            for word1, word2 in zip(words[::2], words[1::2])
+        ]
 
-def convert_uint32_alt(words):
-    # Convert a list of words using the uint32_alt method.
-    # uint32_alt = uint16(register1) + uint16(register2) * 2^16
-    return [
-        int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
-        for word1, word2 in zip(words[::2], words[1::2])
-    ]
 
 def convert_reading(register_list, datatype="int16"):
     # Convert a list of register values based on the specified data type.
@@ -47,7 +47,7 @@ def convert_reading(register_list, datatype="int16"):
     elif datatype == "uint32":
         readings = word_list_to_value(register_list, "uint32")
     elif datatype == "uint32_alt":
-        readings = convert_uint32_alt(register_list)
+        readings = word_list_to_value(register_list, "uint32_alt")
     elif datatype == "int16":
         readings = [int(np.int16(v)) for v in register_list]
     elif datatype == "uint16":
