@@ -47,7 +47,7 @@ def convert_reading(register_list, datatype="int16"):
     elif datatype == "uint32":
         readings = word_list_to_value(register_list, "uint32")
     elif datatype == "uint32_alt":
-        readings = convert_uint32_alt(register_list, "uint32_alt")
+        readings = convert_uint32_alt(register_list)
     elif datatype == "int16":
         readings = [int(np.int16(v)) for v in register_list]
     elif datatype == "uint16":
