@@ -62,7 +62,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
     #   - port: Modbus server port.
     #   - address: Starting address for reading.
     #   - register_length: Number of registers to read.
-    #   - data_type: One of "float", "int32", "int16", or "uint16".
+    #   - data_type: One of "float", "int32", "int16",  or "uint" equivalents.
 
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
@@ -88,14 +88,14 @@ async def read_multiple_modbus_data(
 def main():
     # Main function to render the Streamlit interface and handle user interactions.
 
-    st.title("Async Modbus Reader")
+    st.title("Async Modbus Reader :satellite_antenna:")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
         host = st.text_input("Modbus host IP", "45.95.197.176")
         port = st.text_input("Port", 48418)
         address = st.text_input("Address", 14720)
     with cols2:
-        register_length = st.selectbox("Length", [1, 2, 4])
+        register_length = st.selectbox("Length", [1, 2, 4, 8, 16])
         data_type = st.selectbox(
             "Data Type", ["int16", "uint16", "int32", "uint32", "uint32_alt", "float"]
         )
