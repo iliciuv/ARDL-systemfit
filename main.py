@@ -6,7 +6,6 @@ import asyncio
 import struct
 import numpy as np
 
-
 def word_list_to_value(words, kind):
     # Convert a list of words (16-bit values) to their respective representations.
     if kind == "int32":
