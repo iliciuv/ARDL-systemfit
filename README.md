@@ -10,7 +10,7 @@ It has been built using streamlit which allows a really easy implementation of a
     - port: Modbus server port.
     - address: Starting address for reading.
     - register_length: Number of registers to read.
-    - data_type: Data type for conversion. One of "float", "int32", "int16", or "uint16".
+    - data_type: Data type for conversion. One of "int16", "uint16", "int32", "uint32", "uint32_alt", "float".
 
 ### Live example in share.streamlit.io:
 
@@ -19,4 +19,3 @@ It has been built using streamlit which allows a really easy implementation of a
 https://webmodbusclient.streamlit.app/
 
 -----------------------------------
-
