@@ -15,7 +15,7 @@ def word_list_to_value(words, kind):
     elif kind == "float32":
         k = "f"
     elif kind == "uint32_alt":
-            k = ""
+        k = ""
     else:
         raise ValueError('Invalid kind. Expected "int32", "uint32" or "float32".') # <-- Update the error message
 
