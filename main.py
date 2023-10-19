@@ -22,6 +22,13 @@ def word_list_to_value(words, kind):
         for word_pair in zip(words[::2], words[1::2])
     ]
 
+def convert_uint32_alt(words):
+    # Convert a list of words using the uint32_alt method.
+    # uint32_alt = uint16(register1) + uint16(register2) * 2^16
+    return [
+        int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
+        for word1, word2 in zip(words[::2], words[1::2])
+    ]
 
 def convert_reading(register_list, datatype="int16"):
     # Convert a list of register values based on the specified data type.
@@ -38,7 +45,9 @@ def convert_reading(register_list, datatype="int16"):
     elif datatype == "int32":
         readings = word_list_to_value(register_list, "int32")
     elif datatype == "uint32":
-        readings = word_list_to_value(register_list, "uint32")
+        readings = convert_uint32_alt(register_list, "uint32_alt")
+    elif datatype == "uint32_alt":
+        readings = [int(np.int16(v)) for v in register_list]
     elif datatype == "int16":
         readings = [int(np.int16(v)) for v in register_list]
     elif datatype == "uint16":
