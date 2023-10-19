@@ -12,7 +12,7 @@ def word_list_to_value(words, kind):
     if kind == "int32":
         k = "i"
     elif kind == "uint32":
-        k = "I"   # <-- Add this for unsigned int 32
+        k = "I"
     elif kind == "float32":
         k = "f"
     else:
