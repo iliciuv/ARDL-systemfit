@@ -97,7 +97,7 @@ def main():
     with cols2:
         register_length = st.selectbox("Length", [1, 2, 4])
         data_type = st.selectbox(
-            "Data Type", ["int16", "uint16", "uint32", "int32", "float"]
+            "Data Type", ["int16", "uint16", "int32", "uint32", "uint32_alt", "float"]
         )
         attempts = st.selectbox("nº attempts:", [1, 3, 5])
     with cols3:
