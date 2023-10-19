@@ -45,7 +45,7 @@ def convert_reading(register_list, datatype="int16"):
         readings = [np.int16(v) for v in register_list]
     elif datatype == "uint16":
         readings = [np.uint16(v) for v in register_list]
-    elif datatype == "int16_alt":
+    elif datatype == "int16_new":
         readings = [int(np.int16(v)) for v in register_list]
     return readings
 
@@ -86,13 +86,13 @@ def main():
     st.title("Async Modbus Reader")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
-        host = st.text_input("Modbus host IP", "45.95.197.17X")
+        host = st.text_input("Modbus host IP", "45.95.197.176")
         port = st.text_input("Port", 48418)
         address = st.text_input("Address", 14720)
     with cols2:
         register_length = st.selectbox("Length", [1, 2])
         data_type = st.selectbox(
-            "Data Type", ["int16", "uint16", "int16_alt", "int32", "float"]
+            "Data Type", ["int16", "uint16", "int16_new", "int32", "float"]
         )
         attempts = st.selectbox("nº attempts:", [1, 3, 5])
     with cols3:
