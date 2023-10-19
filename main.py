@@ -90,7 +90,7 @@ def main():
         port = st.text_input("Port", 48418)
         address = st.text_input("Address", 14720)
     with cols2:
-        register_length = st.selectbox("Length", [1, 2])
+        register_length = st.selectbox("Length", [1, 2, 4])
         data_type = st.selectbox(
             "Data Type", ["int16", "uint16", "int16_new", "int32", "float"]
         )
