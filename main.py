@@ -19,7 +19,7 @@ def word_list_to_value(words, kind):
     else:
         raise ValueError('Invalid kind. Expected "int32", "uint32" or "float32".') # <-- Update the error message
 
-    if kind != "unit32_alt":
+    if kind != "uint32_alt":
         return [
             struct.unpack("!" + k, struct.pack("!HH", *word_pair))[0]
             for word_pair in zip(words[::2], words[1::2])
