@@ -6,29 +6,29 @@ import asyncio
 import struct
 import numpy as np
 
-def word_list_to_value(words, kind):
-    # Convert a list of words (16-bit values) to their respective representations.
-    if kind == "int32":
-        k = "i"
-    elif kind == "uint32":
-        k = "I"
-    elif kind == "float32":
-        k = "f"
-    elif kind == "uint32_alt":
-        k = ""
-    else:
-        raise ValueError('Invalid kind. Expected "int32", "uint32" or "float32".') # <-- Update the error message
+    def word_list_to_value(self, words, kind):
+        if kind == "int32":
+            k = 'i'
+        elif kind == "float32":
+            k = 'f'
+        elif kind == "uint32":
+            k = "I"
+        elif kind == "uint32_satec":
+            k = "I"
+        else:
+            raise ValueError('Invalid kind. Expected "int32", "uint32", "float32", or "uint32_satec".')
 
-    if kind != "uint32_alt":
+        # For the uint32_satec kind, you can process the words differently
+        # but still use the unpacking mechanism.
+        if kind == "uint32_satec":
+            processed_words = [
+                int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
+                for word1, word2 in zip(words[::2], words[1::2])
+            ]
+            return [struct.unpack('!' + k, struct.pack('!I', word))[0] for word in processed_words]
+
         return [
-            struct.unpack("!" + k, struct.pack("!HH", *word_pair))[0]
-            for word_pair in zip(words[::2], words[1::2])
-        ]
-    # a especial procedure to get pseudo uint32 values manipulating two consecutive unit16 registers
-    else:
-        return [
-            int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
-            for word1, word2 in zip(words[::2], words[1::2])
+            struct.unpack('!'+  k, struct.pack('!HH', *word_pair))[0] for word_pair in zip(words[::2], words[1::2])
         ]
 
 
