@@ -6,30 +6,28 @@ import asyncio
 import struct
 import numpy as np
 
-    def word_list_to_value(self, words, kind):
-        if kind == "int32":
-            k = 'i'
-        elif kind == "float32":
-            k = 'f'
-        elif kind == "uint32":
-            k = "I"
-        elif kind == "uint32_satec":
-            k = "I"
-        else:
-            raise ValueError('Invalid kind. Expected "int32", "uint32", "float32", or "uint32_satec".')
-
-        # For the uint32_satec kind, you can process the words differently
-        # but still use the unpacking mechanism.
-        if kind == "uint32_satec":
-            processed_words = [
-                int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
-                for word1, word2 in zip(words[::2], words[1::2])
-            ]
-            return [struct.unpack('!' + k, struct.pack('!I', word))[0] for word in processed_words]
-
-        return [
-            struct.unpack('!'+  k, struct.pack('!HH', *word_pair))[0] for word_pair in zip(words[::2], words[1::2])
+def word_list_to_value(self, words, kind):
+    if kind == "int32":
+        k = 'i'
+    elif kind == "float32":
+        k = 'f'
+    elif kind == "uint32":
+        k = "I"
+    elif kind == "uint32_satec":
+        k = "I"
+    else:
+        raise ValueError('Invalid kind. Expected "int32", "uint32", "float32", or "uint32_satec".')
+    # For the uint32_satec kind, you can process the words differently
+    # but still use the unpacking mechanism.
+    if kind == "uint32_satec":
+        processed_words = [
+            int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
+            for word1, word2 in zip(words[::2], words[1::2])
         ]
+        return [struct.unpack('!' + k, struct.pack('!I', word))[0] for word in processed_words]
+    return [
+        struct.unpack('!'+  k, struct.pack('!HH', *word_pair))[0] for word_pair in zip(words[::2], words[1::2])
+    ]
 
 
 def convert_reading(register_list, datatype="int16"):
