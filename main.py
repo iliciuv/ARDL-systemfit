@@ -13,13 +13,13 @@ def word_list_to_value(words, kind):
         k = 'f'
     elif kind == "uint32":
         k = "I"
-    elif kind == "uint32_satec":
+    elif kind == "uint32_alt":
         k = "I"
     else:
         raise ValueError('Invalid kind. Expected "int32", "uint32", "float32", or "uint32_satec".')
     # For the uint32_satec kind, you can process the words differently
     # but still use the unpacking mechanism.
-    if kind == "uint32_satec":
+    if kind == "uint32_alt":
         processed_words = [
             int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
             for word1, word2 in zip(words[::2], words[1::2])
