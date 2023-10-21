@@ -102,6 +102,7 @@ def main():
         register_length = st.selectbox("Length", [1, 2, 4, 8, 16])
         attempts = st.selectbox("nº attempts:", [1, 3, 5])
     with cols2:
+        st.divider()
         if st.button("Submit"):
             results = asyncio.run(
                 read_multiple_modbus_data(
