@@ -89,7 +89,7 @@ async def read_multiple_modbus_data(
 def main():
     # Main function to render the Streamlit interface and handle user interactions.
 
-    st.title(":satellite_antenna: Async Modbus Reader :satellite_antenna:")
+    st.title(":satellite_antenna:   Async Modbus Reader   :satellite_antenna:")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
         host = st.text_input("Modbus host IP", "45.95.197.176")
