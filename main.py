@@ -96,10 +96,10 @@ def main():
         port = st.text_input("Port", 48418)
         address = st.text_input("Address", 14720)
     with cols3:
-        register_length = st.selectbox("Length", [1, 2, 4, 8, 16])
         data_type = st.selectbox(
             "Data Type", ["int16", "uint16", "int32", "uint32", "uint32_alt", "float"]
         )
+        register_length = st.selectbox("Length", [1, 2, 4, 8, 16])
         attempts = st.selectbox("nº attempts:", [1, 3, 5])
     with cols2:
         if st.button("Submit"):
