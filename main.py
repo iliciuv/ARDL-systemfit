@@ -7,6 +7,8 @@ import struct
 import numpy as np
 
 def word_list_to_value(words, kind):
+    # Decrypt multiword modbus 32bit registers
+
     if kind == "int32":
         k = 'i'
     elif kind == "float32":
@@ -17,14 +19,16 @@ def word_list_to_value(words, kind):
         k = "I"
     else:
         raise ValueError('Invalid kind. Expected "int32", "uint32", "float32", or "uint32_satec".')
-    # For the uint32_satec kind, you can process the words differently
-    # but still use the unpacking mechanism.
+
+    # manage an example of "special cases" where two consecutive unit16 work as pseudo- uint32
     if kind == "uint32_alt":
         processed_words = [
             int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
             for word1, word2 in zip(words[::2], words[1::2])
         ]
         return [struct.unpack('!' + k, struct.pack('!I', word))[0] for word in processed_words]
+
+    # standard decryption using struct.unpack
     return [
         struct.unpack('!'+  k, struct.pack('!HH', *word_pair))[0] for word_pair in zip(words[::2], words[1::2])
     ]
@@ -36,8 +40,6 @@ def convert_reading(register_list, datatype="int16"):
     #   - register_list: List of register values.
     #   - num_registers: Number of registers.
     #   - datatype: One of "float", "int32", "int16", "uint16", "uint32", or "uint32_alt".
-    # Returns:
-    #   - List of converted register values.
 
     readings = []
     if datatype == "float":
