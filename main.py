@@ -6,7 +6,6 @@ import asyncio
 import struct
 import numpy as np
 
-
 def word_list_to_value(words, kind):
     # Decrypt multiword modbus 32bit registers
 
