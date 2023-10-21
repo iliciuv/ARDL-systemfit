@@ -115,7 +115,7 @@ def main():
                 )
             )
             st.text("Response: ", results)
-
+            st.divider()
 
 if __name__ == "__main__":
     main()
