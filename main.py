@@ -1,64 +1,41 @@
 # ModbusAsyncWeb. Single script app @Miguel Garcia Duch (27/09/2023)
 
-import streamlit as st
+from typing import List, Union
 from async_modbus import modbus_for_url
-import asyncio
 import struct
-import numpy as np
+import asyncio
+import streamlit as st
 
-def word_list_to_value(words, kind):
-    # Decrypt multiword modbus 32bit registers
 
-    if kind == "int32":
-        k = 'i'
-    elif kind == "float32":
-        k = 'f'
-    elif kind == "uint32":
-        k = "I"
-    elif kind == "uint32_alt":
-        k = "I"
+# Function to convert a list of words based on the specific conversion type 'k'
+def word_list_to_value(words: List[int], k: str) -> List[Union[int, float]]:
+    # Use struct.unpack to convert word pairs to the specified format
+    return [struct.unpack('!'+  k, struct.pack('!HH', *word_pair))[0] for word_pair in zip(words[::2], words[1::2])]
+
+
+# Function to convert a list of register values based on the specified data type
+def convert_reading(register_list: List[int], datatype: str = "int16") -> List[Union[int, float]]:
+    # Dictionary to map data types to their respective conversion types
+    type_map = {
+        "float": 'f',       # Floating-point
+        "int32": 'i',       # 32-bit signed integer
+        "uint32": 'I',      # 32-bit unsigned integer
+        "uint32_alt": 'I',  # Alternative 32-bit unsigned integer
+        "int16": 'h',       # 16-bit signed integer
+        "uint16": 'H'       # 16-bit unsigned integer
+    }
+
+    # Check if the given data type exists in the type_map
+    if datatype in type_map:
+        # Use word_list_to_value for conversion
+        return word_list_to_value(register_list, type_map[datatype])
     else:
-        raise ValueError('Invalid kind. Expected "int32", "uint32", "float32", or "uint32_satec".')
-
-    # manage an example of "special cases" where two consecutive unit16 work as pseudo- uint32
-    if kind == "uint32_alt":
-        processed_words = [
-            int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
-            for word1, word2 in zip(words[::2], words[1::2])
-        ]
-        return [struct.unpack('!' + k, struct.pack('!I', word))[0] for word in processed_words]
-
-    # standard decryption using struct.unpack
-    return [
-        struct.unpack('!'+  k, struct.pack('!HH', *word_pair))[0] for word_pair in zip(words[::2], words[1::2])
-    ]
+        # Raise an error if the datatype is not supported
+        raise ValueError(f"Invalid datatype. Expected one of {list(type_map.keys())}, got {datatype}")
 
 
-def convert_reading(register_list, datatype="int16"):
-    # Convert a list of register values based on the specified data type.
-    # Parameters:
-    #   - register_list: List of register values.
-    #   - num_registers: Number of registers.
-    #   - datatype: One of "float", "int32", "int16", "uint16", "uint32", or "uint32_alt".
-
-    readings = []
-    if datatype == "float":
-        readings = word_list_to_value(register_list, "float32")
-    elif datatype == "int32":
-        readings = word_list_to_value(register_list, "int32")
-    elif datatype == "uint32":
-        readings = word_list_to_value(register_list, "uint32")
-    elif datatype == "uint32_alt":
-        readings = word_list_to_value(register_list, "uint32_alt")
-    elif datatype == "int16":
-        readings = [int(np.int16(v)) for v in register_list]
-    elif datatype == "uint16":
-        readings = [int(np.uint16(v)) for v in register_list]
-    return readings
-
-
+# Asynchronously read data from Modbus server and display it in Streamlit.
 async def read_modbus_data(host, port, address, register_length=1, data_type="int16"):
-    # Asynchronously read data from Modbus server and display it in Streamlit.
     # Parameters:
     #   - host: Modbus server IP address.
     #   - port: Modbus server port.
@@ -77,8 +54,8 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
         st.write("Error: ", e)
 
 
+# Asynchronously manage concurrent calls
 async def read_multiple_modbus_data(
-    # Asynchronously manage concurrent calls
     host, port, address, register_length, data_type, attempts
 ):
     results = []
@@ -88,8 +65,8 @@ async def read_multiple_modbus_data(
     return results
 
 
+# Main function to render the Streamlit interface and handle user interactions.
 def main():
-    # Main function to render the Streamlit interface and handle user interactions.
 
     st.title(":satellite_antenna: Asynchronous Modbus Reader :satellite_antenna:")
     cols1, cols2, cols3 = st.columns([1, 1, 1])

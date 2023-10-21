@@ -1,4 +1,3 @@
 # Webmodbusclient needed dependencies
-numpy==1.23.5
 streamlit==1.25.0
 async-modbus==0.2.1
