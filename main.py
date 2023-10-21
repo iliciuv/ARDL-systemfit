@@ -113,7 +113,7 @@ def main():
                     attempts=int(attempts),
                 )
             )
-            st.slider("Response: ", results)
+            st.caption("Response: ", results)
 
 
 if __name__ == "__main__":
