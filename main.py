@@ -95,13 +95,13 @@ def main():
         host = st.text_input("Modbus host IP", "45.95.197.176")
         port = st.text_input("Port", 48418)
         address = st.text_input("Address", 14720)
-    with cols2:
+    with cols3:
         register_length = st.selectbox("Length", [1, 2, 4, 8, 16])
         data_type = st.selectbox(
             "Data Type", ["int16", "uint16", "int32", "uint32", "uint32_alt", "float"]
         )
         attempts = st.selectbox("nº attempts:", [1, 3, 5])
-    with cols3:
+    with cols2:
         if st.button("Submit"):
             results = asyncio.run(
                 read_multiple_modbus_data(
