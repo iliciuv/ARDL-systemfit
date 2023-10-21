@@ -6,7 +6,7 @@ import asyncio
 import struct
 import numpy as np
 
-def word_list_to_value(self, words, kind):
+def word_list_to_value(words, kind):
     if kind == "int32":
         k = 'i'
     elif kind == "float32":
