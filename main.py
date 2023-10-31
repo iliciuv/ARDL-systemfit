@@ -95,11 +95,11 @@ def main():
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
         host = st.text_input("IP del host:", "45.95.197.176")
-        port = st.text_input("Puerto", 48418)
-        address = st.text_input("Registro inicial", 14720)
+        port = st.text_input("Puerto:", 48418)
+        address = st.text_input("Registro inicial:", 14720)
     with cols3:
         data_type = st.selectbox(
-            "Tipo de dato", ["int16", "uint16", "int32", "uint32", "uint32 (SATEC)", "float"]
+            "Tipo de dato:", ["int16", "uint16", "int32", "uint32", "uint32 (SATEC)", "float"]
         )
         register_length = st.selectbox("Longitud (bytes):", [1, 2, 4, 8, 16])
         attempts = st.selectbox("Nº intentos:", [1, 3, 5])
