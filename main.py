@@ -27,7 +27,6 @@ def word_list_to_value(words, kind):
             for word1, word2 in zip(words[::2], words[1::2])
         ]
         return [struct.unpack('!' + k, struct.pack('!I', word))[0] for word in processed_words]
-
     # standard decryption using struct.unpack
     return [
         struct.unpack('!'+  k, struct.pack('!HH', *word_pair))[0] for word_pair in zip(words[::2], words[1::2])
