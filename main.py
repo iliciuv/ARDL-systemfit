@@ -106,17 +106,19 @@ def main():
     with cols2:
         st.divider()
         if st.button("Enviar"):
-            with st.spinner('Performing request...'):
-                results = asyncio.run(
-                    read_multiple_modbus_data(
-                        host=host,
-                        port=int(port),
-                        address=int(address),
-                        register_length=int(register_length),
-                        data_type=data_type,
-                        attempts=int(attempts),
-                    )
+            message_placeholder = st.empty()  # Create a placeholder
+            message_placeholder.text('Performing request...')
+            results = asyncio.run(
+                read_multiple_modbus_data(
+                    host=host,
+                    port=int(port),
+                    address=int(address),
+                    register_length=int(register_length),
+                    data_type=data_type,
+                    attempts=int(attempts),
                 )
+            )
+            message_placeholder.empty()  # Clear the placeholder
             st.write("Respuesta: ", results)
         st.divider()
 
