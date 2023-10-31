@@ -67,8 +67,8 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
         result = await asyncio.wait_for(client.read_holding_registers(
-            slave_id=0x01, starting_address=address, quantity=register_length
-        ), timeout=90)  # Setting timeout to 90 seconds
+            slave_id=int(f"1x{slave:02}"), starting_address=address, quantity=register_length
+        ), timeout=int(user_timeout)  # Setting timeout to 90 seconds
         converted_result = convert_reading(result, data_type)
         return converted_result
     except asyncio.TimeoutError:
@@ -96,12 +96,14 @@ def main():
         host = st.text_input("IP del host:", "45.95.197.176")
         port = st.text_input("Puerto:", 48418)
         address = st.text_input("Registro inicial:", 14720)
+        slave = st.text_input("Esclavo:", 1)
     with cols3:
         data_type = st.selectbox(
             "Tipo de dato:", ["int16", "uint16", "int32", "uint32", "uint32 (SATEC)", "float"]
         )
         register_length = st.selectbox("Longitud (bytes):", [1, 2, 4, 8, 16])
         attempts = st.selectbox("Nº intentos:", [1, 3, 5])
+        user_timeout = st.text_input("Timeout respuesta (s):", 90)
     with cols2:
         st.divider()
         if st.button("Enviar"):
