@@ -15,13 +15,13 @@ def word_list_to_value(words, kind):
         k = 'f'
     elif kind == "uint32":
         k = "I"
-    elif kind == "uint32 (SATEC)":
+    elif kind == "uint32_alt":
         k = "I"
     else:
         raise ValueError('Invalid kind. Expected "int32", "uint32", "float32", or "uint32_satec".')
 
     # manage an example of "special cases" where two consecutive unit16 work as pseudo- uint32
-    if kind == "uint32 (SATEC)":
+    if kind == "uint32_alt":
         processed_words = [
             int(np.uint16(word1)) + int(np.uint16(word2)) * 2**16
             for word1, word2 in zip(words[::2], words[1::2])
@@ -39,7 +39,7 @@ def convert_reading(register_list, datatype="int16"):
     # Parameters:
     #   - register_list: List of register values.
     #   - num_registers: Number of registers.
-    #   - datatype: One of "float", "int32", "int16", "uint16", "uint32", or "uint32 (SATEC)".
+    #   - datatype: One of "float", "int32", "int16", "uint16", "uint32", or "uint32_alt".
 
     readings = []
     if datatype == "float":
@@ -48,8 +48,8 @@ def convert_reading(register_list, datatype="int16"):
         readings = word_list_to_value(register_list, "int32")
     elif datatype == "uint32":
         readings = word_list_to_value(register_list, "uint32")
-    elif datatype == "uint32 (SATEC)":
-        readings = word_list_to_value(register_list, "uint32 (SATEC)")
+    elif datatype == "uint32_alt":
+        readings = word_list_to_value(register_list, "uint32_alt")
     elif datatype == "int16":
         readings = [int(np.int16(v)) for v in register_list]
     elif datatype == "uint16":
@@ -91,21 +91,21 @@ async def read_multiple_modbus_data(
 def main():
     # Main function to render the Streamlit interface and handle user interactions.
 
-    st.title(":satellite_antenna: Asynchronous Modbus Client :satellite_antenna:")
+    st.title(":satellite_antenna: Asynchronous Modbus Reader :satellite_antenna:")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
     with cols1:
-        host = st.text_input("IP del host:", "45.95.197.176")
-        port = st.text_input("Puerto", 48418)
-        address = st.text_input("Registro inicial", 14720)
+        host = st.text_input("Modbus host IP", "45.95.197.176")
+        port = st.text_input("Port", 48418)
+        address = st.text_input("Address", 14720)
     with cols3:
         data_type = st.selectbox(
-            "Tipo de dato", ["int16", "uint16", "int32", "uint32", "uint32 (SATEC)", "float"]
+            "Data Type", ["int16", "uint16", "int32", "uint32", "uint32_alt", "float"]
         )
-        register_length = st.selectbox("Longitud (bytes):", [1, 2, 4, 8, 16])
-        attempts = st.selectbox("Nº intentos:", [1, 3, 5])
+        register_length = st.selectbox("Length", [1, 2, 4, 8, 16])
+        attempts = st.selectbox("nº attempts:", [1, 3, 5])
     with cols2:
         st.divider()
-        if st.button("Enviar"):
+        if st.button("Submit"):
             results = asyncio.run(
                 read_multiple_modbus_data(
                     host=host,
@@ -116,7 +116,7 @@ def main():
                     attempts=int(attempts),
                 )
             )
-            st.write("Respuesta: ", results)
+            st.write("Response: ", results)
         st.divider()
 
 if __name__ == "__main__":
