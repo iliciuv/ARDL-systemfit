@@ -67,7 +67,7 @@ async def read_modbus_data(host, port, address, register_length, data_type, slav
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
         result = await asyncio.wait_for(client.read_holding_registers(
-            slave_id=slave, starting_address=address, quantity=register_length), timeout=usr_timeout)
+            slave_id=slave, starting_address=address, quantity=register_length), timeout=int(usr_timeout))
         converted_result = convert_reading(result, data_type)
         return converted_result
     except asyncio.TimeoutError:
