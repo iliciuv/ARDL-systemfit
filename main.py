@@ -113,11 +113,9 @@ def main():
                     host=host,
                     port=int(port),
                     address=int(address),
-                    slave = int(slave),
                     register_length=int(register_length),
                     data_type=data_type,
-                    attempts=int(attempts),
-                    usr_timeout= int(usr_timeout)
+                    attempts=int(attempts)
                 )
             )
             message_placeholder.empty()  # Clear the placeholder
