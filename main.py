@@ -102,7 +102,7 @@ def main():
         )
         register_length = st.selectbox("Longitud (bytes):", [1, 2, 4, 8, 16])
         attempts = st.selectbox("Nº intentos:", [1, 3, 5])
-        user_timeout = st.text_input("Timeout respuesta (s):", 90)
+        usr_timeout = st.text_input("Timeout respuesta (s):", 90)
     with cols2:
         st.divider()
         if st.button("Enviar"):
