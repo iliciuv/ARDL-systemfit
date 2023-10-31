@@ -78,11 +78,11 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
 
 async def read_multiple_modbus_data(
     # Asynchronously manage concurrent calls
-    host, port, address, slave, register_length, data_type, attempts, usr_timeout
+    host, port, address, register_length, data_type, attempts
 ):
     results = []
     for _ in range(attempts):
-        result = await read_modbus_data(host, port, address, slave, register_length, data_type, usr_timeout)
+        result = await read_modbus_data(host, port, address, register_length, data_type)
         results += result
     return results
 
