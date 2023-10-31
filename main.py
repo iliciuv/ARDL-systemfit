@@ -110,12 +110,12 @@ def main():
             message_placeholder.text('Realizando petición...')
             results = asyncio.run(
                 read_multiple_modbus_data(
-                    host=host,
+                    host=str(host),
                     port=int(port),
                     address=int(address),
                     slave=int(slave),
                     register_length=int(register_length),
-                    data_type=data_type,
+                    data_type=str(data_type),
                     attempts=int(attempts),
                     usr_timeout=int(usr_timeout)
                 )
