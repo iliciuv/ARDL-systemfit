@@ -55,10 +55,9 @@ def convert_reading(register_list, datatype="int16"):
     elif datatype == "uint16":
         readings = [int(np.uint16(v)) for v in register_list]
     return readings
-
-
+ 
 async def read_modbus_data(host, port, address, register_length=1, data_type="int16"):
-    # Asynchronously read data from Modbus server and display it in Streamlit.
+   # Asynchronously read data from Modbus server and display it in Streamlit.
     # Parameters:
     #   - host: Modbus server IP address.
     #   - port: Modbus server port.
@@ -68,11 +67,13 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
 
     client = modbus_for_url(f"tcp://{host}:{port}")
     try:
-        result = await client.read_holding_registers(
+        result = await asyncio.wait_for(client.read_holding_registers(
             slave_id=0x01, starting_address=address, quantity=register_length
-        )
+        ), timeout=90)  # Setting timeout to 90 seconds
         converted_result = convert_reading(result, data_type)
         return converted_result
+    except asyncio.TimeoutError:
+        st.write("Error: timeout exceeded")
     except Exception as e:
         st.write("Error: ", e)
 
@@ -87,9 +88,8 @@ async def read_multiple_modbus_data(
         results += result
     return results
 
-
 def main():
-    # Main function to render the Streamlit interface and handle user interactions.
+    # Main function to render the Streamlit interface and handle user interactions. 
 
     st.title(":satellite_antenna: Asynchronous Modbus Client :satellite_antenna:")
     cols1, cols2, cols3 = st.columns([1, 1, 1])
@@ -106,18 +106,20 @@ def main():
     with cols2:
         st.divider()
         if st.button("Enviar"):
-            results = asyncio.run(
-                read_multiple_modbus_data(
-                    host=host,
-                    port=int(port),
-                    address=int(address),
-                    register_length=int(register_length),
-                    data_type=data_type,
-                    attempts=int(attempts),
+            with st.spinner('Performing request...'):
+                results = asyncio.run(
+                    read_multiple_modbus_data(
+                        host=host,
+                        port=int(port),
+                        address=int(address),
+                        register_length=int(register_length),
+                        data_type=data_type,
+                        attempts=int(attempts),
+                    )
                 )
-            )
             st.write("Respuesta: ", results)
         st.divider()
 
 if __name__ == "__main__":
     main()
+
