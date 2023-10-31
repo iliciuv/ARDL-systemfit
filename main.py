@@ -107,7 +107,7 @@ def main():
         st.divider()
         if st.button("Enviar"):
             message_placeholder = st.empty()  # Create a placeholder
-            message_placeholder.text('Performing request...')
+            message_placeholder.text('Realizando petición...')
             results = asyncio.run(
                 read_multiple_modbus_data(
                     host=host,
