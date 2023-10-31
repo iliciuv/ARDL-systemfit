@@ -78,7 +78,7 @@ async def read_modbus_data(host, port, address, register_length=1, data_type="in
 
 async def read_multiple_modbus_data(
     # Asynchronously manage concurrent calls
-    host, port, address, register_length, data_type, attempts
+    host, port, address, slave, register_length, data_type, attempts, usr_timeout
 ):
     results = []
     for _ in range(attempts):
@@ -113,9 +113,11 @@ def main():
                     host=host,
                     port=int(port),
                     address=int(address),
+                    slave=int(slave),
                     register_length=int(register_length),
                     data_type=data_type,
-                    attempts=int(attempts)
+                    attempts=int(attempts),
+                    usr_timeout=int(usr_timeout)
                 )
             )
             message_placeholder.empty()  # Clear the placeholder
