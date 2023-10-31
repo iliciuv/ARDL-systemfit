@@ -55,7 +55,7 @@ def convert_reading(register_list, datatype="int16"):
         readings = [int(np.uint16(v)) for v in register_list]
     return readings
  
-async def read_modbus_data(host, port, address, register_length=1, data_type="int16"):
+async def read_modbus_data(host, port, address, register_length=1, data_type="int16", slave = 1, usr_timeout = 90):
    # Asynchronously read data from Modbus server and display it in Streamlit.
     # Parameters:
     #   - host: Modbus server IP address.
@@ -110,12 +110,14 @@ def main():
             message_placeholder.text('Realizando petición...')
             results = asyncio.run(
                 read_multiple_modbus_data(
-                    host=host,
+                    host=str(host),
                     port=int(port),
                     address=int(address),
+                    slave = int(slave),
                     register_length=int(register_length),
-                    data_type=data_type,
+                    data_type=str(data_type),
                     attempts=int(attempts),
+                    usr_timeout= int(usr_timeout)
                 )
             )
             message_placeholder.empty()  # Clear the placeholder
