@@ -55,7 +55,7 @@ def convert_reading(register_list, datatype="int16"):
         readings = [int(np.uint16(v)) for v in register_list]
     return readings
  
-async def read_modbus_data(host, port, address, slave, usr_timeout, register_length=1, data_type="int16"):
+async def read_modbus_data(host, port, address, register_length, data_type, slave, usr_timeout):
    # Asynchronously read data from Modbus server and display it in Streamlit.
     # Parameters:
     #   - host: Modbus server IP address.
